@@ -62,13 +62,19 @@ mainBody model =
 
 
 sidebar =
-    div [ class "col-md-3" ] [ text "sidebar" ]
+    div [ class "col-md-3" ]
+        [ div []
+            [ text "New Todo"
+            , input [ style [ ( "margin-bottom", "10px" ) ] ] []
+            , button [ class "btn btn-default" ] [ text "Submit" ]
+            ]
+        ]
 
 
 content model =
     div [ class "col-md-9" ]
         (List.map
-            (\item -> singleItem item)
+            singleItem
             model.items
         )
 
