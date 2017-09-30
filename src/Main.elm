@@ -17,6 +17,17 @@ type alias Model =
     }
 
 
+item2 =
+    TodoItem 2 "Clean litter box" False
+
+
+initModel =
+    [ { id = 1, description = "Take out trash", completed = False }
+    , item2
+    , TodoItem 3 "Finish meetup talk" True
+    ]
+
+
 main =
     div []
         [ header
@@ -33,7 +44,7 @@ header =
 
 mainBody =
     div
-        [ class "row" ]
+        [ class "row container" ]
         [ sidebar
         , content
         ]
@@ -44,4 +55,20 @@ sidebar =
 
 
 content =
-    div [ class "col-md-9" ] [ text "main content" ]
+    div [ class "col-md-9" ] [ singleItem item2 ]
+
+
+singleItem item =
+    let
+        singleCheckBox item =
+            input
+                [ style [ ( "margin-right", "8px" ) ]
+                , type_ "checkbox"
+                , checked item.completed
+                ]
+                []
+    in
+        div [ class "alert alert-success" ]
+            [ singleCheckBox item
+            , text item.description
+            ]
