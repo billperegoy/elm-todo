@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 
 
 type alias TodoItem =
@@ -13,8 +14,14 @@ type alias TodoItem =
 
 type alias Model =
     { nextId : Int
+    , inputText : String
     , items : List TodoItem
     }
+
+
+type Msg
+    = UpdateTodoInput String
+    | CreateTodo
 
 
 main =
@@ -27,6 +34,7 @@ main =
 
 initModel =
     { nextId = 4
+    , inputText = ""
     , items =
         [ TodoItem 1 "Take out trash" False
         , TodoItem 2 "Clean litter box" False
@@ -36,13 +44,26 @@ initModel =
 
 
 update msg model =
-    model
+    case msg of
+        UpdateTodoInput value ->
+            { model | inputText = value }
+
+        CreateTodo ->
+            let
+                newTodo =
+                    TodoItem model.nextId model.inputText False
+            in
+                { model
+                    | inputText = ""
+                    , nextId = model.nextId + 1
+                    , items = newTodo :: model.items
+                }
 
 
 view model =
     div []
         [ header
-        , mainBody initModel
+        , mainBody model
         ]
 
 
@@ -56,17 +77,26 @@ header =
 mainBody model =
     div
         [ class "row container" ]
-        [ sidebar
+        [ sidebar model
         , content model
         ]
 
 
-sidebar =
+sidebar model =
     div [ class "col-md-3" ]
         [ div []
             [ text "New Todo"
-            , input [ style [ ( "margin-bottom", "10px" ) ] ] []
-            , button [ class "btn btn-default" ] [ text "Submit" ]
+            , input
+                [ value model.inputText
+                , onInput UpdateTodoInput
+                , style [ ( "margin-bottom", "10px" ) ]
+                ]
+                []
+            , button
+                [ onClick CreateTodo
+                , class "btn btn-default"
+                ]
+                [ text "Submit" ]
             ]
         ]
 
@@ -74,7 +104,7 @@ sidebar =
 content model =
     div [ class "col-md-9" ]
         (List.map
-            singleItem
+            (\item -> singleItem item)
             model.items
         )
 
