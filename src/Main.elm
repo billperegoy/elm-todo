@@ -17,21 +17,20 @@ type alias Model =
     }
 
 
-item2 =
-    TodoItem 2 "Clean litter box" False
-
-
 initModel =
-    [ { id = 1, description = "Take out trash", completed = False }
-    , item2
-    , TodoItem 3 "Finish meetup talk" True
-    ]
+    { nextId = 4
+    , items =
+        [ TodoItem 1 "Take out trash" False
+        , TodoItem 2 "Clean litter box" False
+        , TodoItem 3 "Finish meetup talk" True
+        ]
+    }
 
 
 main =
     div []
         [ header
-        , mainBody
+        , mainBody initModel
         ]
 
 
@@ -42,11 +41,11 @@ header =
         ]
 
 
-mainBody =
+mainBody model =
     div
         [ class "row container" ]
         [ sidebar
-        , content
+        , content model
         ]
 
 
@@ -54,8 +53,12 @@ sidebar =
     div [ class "col-md-3" ] [ text "sidebar" ]
 
 
-content =
-    div [ class "col-md-9" ] [ singleItem item2 ]
+content model =
+    div [ class "col-md-9" ]
+        (List.map
+            (\item -> singleItem item)
+            model.items
+        )
 
 
 singleItem item =
