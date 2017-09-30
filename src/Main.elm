@@ -4,6 +4,19 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 
 
+type alias TodoItem =
+    { id : Int
+    , description : String
+    , completed : Bool
+    }
+
+
+type alias Model =
+    { nextId : Int
+    , items : List TodoItem
+    }
+
+
 main =
     div []
         [ header
