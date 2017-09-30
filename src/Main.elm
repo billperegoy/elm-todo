@@ -6,13 +6,29 @@ import Html.Attributes exposing (..)
 
 main =
     div []
-        [ div [ class "jumbotron" ]
-            [ div [ class "container text-center" ]
-                [ h1 [] [ text "Elm Todo List" ] ]
-            ]
-        , div
-            [ class "row" ]
-            [ div [ class "col-md-3" ] [ text "sidebar" ]
-            , div [ class "col-md-9" ] [ text "main content" ]
-            ]
+        [ header
+        , mainBody
         ]
+
+
+header =
+    div [ class "jumbotron" ]
+        [ div [ class "container text-center" ]
+            [ h1 [] [ text "Elm Todo List" ] ]
+        ]
+
+
+mainBody =
+    div
+        [ class "row" ]
+        [ sidebar
+        , content
+        ]
+
+
+sidebar =
+    div [ class "col-md-3" ] [ text "sidebar" ]
+
+
+content =
+    div [ class "col-md-9" ] [ text "main content" ]
