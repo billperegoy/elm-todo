@@ -17,6 +17,14 @@ type alias Model =
     }
 
 
+main =
+    Html.beginnerProgram
+        { model = initModel
+        , update = update
+        , view = view
+        }
+
+
 initModel =
     { nextId = 4
     , items =
@@ -27,7 +35,11 @@ initModel =
     }
 
 
-main =
+update msg model =
+    model
+
+
+view model =
     div []
         [ header
         , mainBody initModel
