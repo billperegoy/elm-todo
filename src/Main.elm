@@ -22,6 +22,7 @@ type alias Model =
 type Msg
     = UpdateTodoInput String
     | CreateTodo
+    | ProcessCheckBox Int Bool
 
 
 main =
@@ -58,6 +59,20 @@ update msg model =
                     , nextId = model.nextId + 1
                     , items = newTodo :: model.items
                 }
+
+        ProcessCheckBox id value ->
+            let
+                newItems =
+                    List.map (\item -> setCheckBoxValue item id value) model.items
+            in
+                { model | items = newItems }
+
+
+setCheckBoxValue item id value =
+    if item.id == id then
+        { item | completed = value }
+    else
+        item
 
 
 view model =
@@ -114,12 +129,20 @@ singleItem item =
         singleCheckBox item =
             input
                 [ style [ ( "margin-right", "8px" ) ]
+                , onCheck (ProcessCheckBox item.id)
                 , type_ "checkbox"
                 , checked item.completed
                 ]
                 []
     in
-        div [ class "alert alert-success" ]
+        div [ class "alert alert-success", (itemStyle item) ]
             [ singleCheckBox item
             , text item.description
             ]
+
+
+itemStyle item =
+    if (Debug.log "completed:" item.completed) then
+        style [ ( "margin-right", "8px" ), ( "text-decoration", "line-through" ) ]
+    else
+        style [ ( "margin-right", "8px" ) ]
