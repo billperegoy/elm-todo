@@ -109,7 +109,7 @@ sidebar model =
                 []
             , button
                 [ onClick CreateTodo
-                , class "btn btn-default"
+                , class "btn btn-success"
                 ]
                 [ text "Submit" ]
             ]
